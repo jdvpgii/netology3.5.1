@@ -7,7 +7,7 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         String input = null;
-        String[] products = {"Bread", "Apple", "Milk", "Pineapple", "Heroin"};
+        String[] productName = {"Bread", "Apple", "Milk", "Pineapple", "Heroin"};
         int[] price = {48, 77, 89, 350, 500};
         int[] counterOfEachItem = new int[price.length];
         int productSum = 0;
@@ -15,7 +15,7 @@ public class Main {
 
         while (true) {
             System.out.println("List of possible items to buy");
-            showStoreProducts(products, price);
+            showStoreProducts(productName, price);
 
             System.out.println("\nSelect a product or enter `end`");
             input = reader.readLine();
@@ -24,7 +24,7 @@ public class Main {
                 System.out.println("Your shopping cart:");
                 for (int i = 0; i < counterOfEachItem.length; i++) {
                     if (counterOfEachItem[i] != 0) {
-                        System.out.println(products[i] + " " + counterOfEachItem[i] + " . " + price[i] + "$/PC. = " + (counterOfEachItem[i] * price[i]) + "$.");
+                        System.out.println(productName[i] + " " + counterOfEachItem[i] + " . " + price[i] + "$/PC. = " + (counterOfEachItem[i] * price[i]) + "$.");
                     }
                 }
                 System.out.println("Total: " + productSum + "$");
