@@ -6,39 +6,29 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        String input = null;
         String[] productName = {"Bread", "Apple", "Milk", "Pineapple", "Heroin"};
         int[] price = {48, 77, 89, 350, 500};
-        int[] counterOfEachItem = new int[price.length];
-        int productSum = 0;
-        int productNumber = 0;
+        Basket basket1 = new Basket(productName, price);
 
         while (true) {
             System.out.println("List of possible items to buy");
             showStoreProducts(productName, price);
 
             System.out.println("\nSelect a product or enter `end`");
-            input = reader.readLine();
-
-            if (input.equals("end")) {
-                System.out.println("Your shopping cart:");
-                for (int i = 0; i < counterOfEachItem.length; i++) {
-                    if (counterOfEachItem[i] != 0) {
-                        System.out.println(productName[i] + " " + counterOfEachItem[i] + " . " + price[i] + "$/PC. = " + (counterOfEachItem[i] * price[i]) + "$.");
-                    }
-                }
-                System.out.println("Total: " + productSum + "$");
+            String productNumber = reader.readLine();
+            if (productNumber.equals("end")) {
+                basket1.printCart();
                 break;
             }
 
-            productNumber = Integer.parseInt(input);
-            int priceOfTheSelectedProduct = price[productNumber-1];
-
             System.out.println("\nEnter item quantity or enter `end`");
+            String productCounter = reader.readLine();
+            if (productCounter.equals("end")) {
+                basket1.printCart();
+                break;
+            }
 
-            input = reader.readLine();
-            counterOfEachItem[productNumber-1] += Integer.parseInt(input);
-            productSum = priceOfTheSelectedProduct * Integer.parseInt(input);
+            basket1.addToCart(Integer.parseInt(productNumber)-1, Integer.parseInt(productCounter));
         }
 
     }

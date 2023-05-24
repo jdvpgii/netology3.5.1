@@ -1,33 +1,45 @@
 import java.io.File;
 
 public class Basket {
+    private String[] productName;
+    private int[] price;
+    private int[] counterOfEachItem;
     public Basket(String[] productName, int[] price) {
-
+        this.productName = productName;
+        this.price = price;
+        counterOfEachItem = new int[price.length];
     }
 
     void addToCart(int productNum, int amount) {
-        //метод добавления amount штук продукта номер productNum в корзину;
+        counterOfEachItem[productNum] += amount;
     }
 
     void printCart() {
-        //метод вывода на экран покупательской корзины.
+        int productSum = 0;
+        System.out.println("Your shopping cart:");
+        for (int i = 0; i < productName.length; i++) {
+            System.out.println(productName[i] + ": " + price[i] + "$ * " + counterOfEachItem[i] + "pc." + " = " + (price[i] * counterOfEachItem[i]));
+            productSum += price[i] * counterOfEachItem[i];
+        }
+        System.out.println("Total: " + productSum + "$");
     }
 
-    void saveTxt( File textFile) {
-        //метод сохранения корзины в текстовый файл; использовать встроенные сериализаторы нельзя;
-    }
-
-    static Basket loadFromTxtFile(File textFile) {
-        //статический(!) метод восстановления объекта корзины из текстового файла, в который ранее была она сохранена;
-    }
-
-    static Basket saveBin (File file) {
-
-    }
-
-    static Basket loadFromBinFile(File file) {
-        //для загрузки корзины из бинарного файла.
-    }
+//    void saveTxt( File textFile) {
+//        //метод сохранения корзины в текстовый файл; использовать встроенные сериализаторы нельзя;
+//
+//    }
+//
+//    static Basket loadFromTxtFile(File textFile) {
+//        //статический(!) метод восстановления объекта корзины из текстового файла, в который ранее была она сохранена;
+//    }
+//
+//    static Basket saveBin (File file) {
+//
+//    }
+//
+//    static Basket loadFromBinFile(File file) {
+//        //для загрузки корзины из бинарного файла.
+//    }
 }
 
 /*
