@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
+    static Basket basket;
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -30,7 +32,11 @@ public class Main {
 
             basket1.addToCart(Integer.parseInt(productNumber)-1, Integer.parseInt(productCounter));
         }
-
+        File file = new File("basket1.txt");
+        basket1.saveTxt(file);
+        Basket.loadFromTxtFile(file);
+        File file1 = new File("basket2.bin");
+        Basket.saveBin(file);
     }
 
     private static void showStoreProducts(String[] strings, int[] price) {

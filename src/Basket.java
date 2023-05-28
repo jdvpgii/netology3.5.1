@@ -1,61 +1,84 @@
-import java.io.File;
+import java.io.*;
 
 public class Basket {
     private String[] productName;
     private int[] price;
     private int[] counterOfEachItem;
+    int productSum = 0;
     public Basket(String[] productName, int[] price) {
         this.productName = productName;
         this.price = price;
         counterOfEachItem = new int[price.length];
     }
 
-    void addToCart(int productNum, int amount) {
+    public Basket(String[] productName, int[] price, int[] counterOfEachItem) {
+        this.productName = productName;
+        this.price = price;
+        this.counterOfEachItem = counterOfEachItem;
+    }
+
+    protected void addToCart(int productNum, int amount) {
         counterOfEachItem[productNum] += amount;
     }
 
-    void printCart() {
-        int productSum = 0;
+    protected void printCart() {
+
         System.out.println("Your shopping cart:");
+        // TODO 1.1 как устранить это повторение
         for (int i = 0; i < productName.length; i++) {
-            System.out.println(productName[i] + ": " + price[i] + "$ * " + counterOfEachItem[i] + "pc." + " = " + (price[i] * counterOfEachItem[i]));
+            if (counterOfEachItem[i] != 0) {
+                System.out.println(productName[i] + " " + price[i] + " " + counterOfEachItem[i]);
+            }
             productSum += price[i] * counterOfEachItem[i];
         }
-        System.out.println("Total: " + productSum + "$");
+        System.out.println(productSum);
     }
 
-//    void saveTxt( File textFile) {
-//        //метод сохранения корзины в текстовый файл; использовать встроенные сериализаторы нельзя;
-//
-//    }
-//
-//    static Basket loadFromTxtFile(File textFile) {
-//        //статический(!) метод восстановления объекта корзины из текстового файла, в который ранее была она сохранена;
-//    }
-//
-//    static Basket saveBin (File file) {
-//
-//    }
-//
-//    static Basket loadFromBinFile(File file) {
-//        //для загрузки корзины из бинарного файла.
-//    }
-}
-
-/*
-Подсказки
-Если все данные у вас хранятся в массивах, то просто сохраните по массиву на каждой строке.
-Например, если бы это был лонговый массив в поле нашей корзины, то можно было бы сделать так:
-
-public void saveTxt(File textFile) throws IOException {
-    try (PrintWriter out = new PrintWriter(file);) {
-        ...
-        for (long e : longArrInField)
-            out.print(e + " ");
+    protected void saveTxt( File textFile) {
+        try (FileWriter fileWriter = new FileWriter(textFile);
+             PrintWriter printWriter = new PrintWriter(fileWriter)){
+            // TODO 1.2 как устранить это потоврение
+            for (int i = 0; i < productName.length; i++) {
+                printWriter.println(productName[i] + " " + price[i] + " " + counterOfEachItem[i]);
+            }
+            printWriter.print(productSum);
+            System.out.println();
+        } catch (IOException e) {
+            e.getMessage();
         }
-        ...
+    }
+
+    protected static Basket loadFromTxtFile(File textFile) throws IOException {
+        try (BufferedReader in = new BufferedReader(new FileReader(textFile))) {
+            String[] products = in.readLine().split(" ");
+            String[] price = in.readLine().split(" ");
+
+            int[] priceTxt = new int[price.length];
+            for (int i = 0; i < price.length; i++) {
+                priceTxt[i] = Integer.parseInt(price[i]);
+            }
+            String[] counter = in.readLine().split(" ");
+            int[] counterFromTxt = new int[counter.length];
+            for (int j = 0; j < counter.length; j++) {
+                counterFromTxt[j] = Integer.parseInt(counter[j]);
+            }
+            Basket basketFromTxt = new Basket(products, priceTxt);
+            return basketFromTxt;
+        }
+
+    }
+
+    static void saveBin (File file) throws IOException{
+        try (FileOutputStream fileOutputStream = new FileOutputStream("basket.bin");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)){
+            objectOutputStream.writeObject(Main.basket);
+        }
+    }
+
+    static Basket loadFromBinFile(File file) throws IOException, ClassNotFoundException {
+        try (FileInputStream fis = new FileInputStream(file);) {
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            return (Basket) ois.readObject();
+        }
     }
 }
-
-А при чтении вы сможете строку файла разбить через split(" ")и пройдясь циклом каждое значение превратить в long.
- */
